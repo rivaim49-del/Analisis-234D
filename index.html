@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>ANALISIS RESULT 4D - STATISTIK</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#07111f;
+    color:#fff;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:15px;
+}
+
+.header{
+    background:linear-gradient(135deg,#0d47a1,#1565c0);
+    padding:22px;
+    border-radius:16px;
+    text-align:center;
+    margin-bottom:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+}
+
+.header h1{
+    margin:0;
+    font-size:25px;
+}
+
+.header p{
+    margin:8px 0 0;
+    opacity:.85;
+}
+
+.card{
+    background:#101d2e;
+    border:1px solid #24374d;
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+.card h2{
+    margin-top:0;
+    color:#64b5f6;
+    font-size:20px;
+}
+
+textarea{
+    width:100%;
+    min-height:150px;
+    resize:vertical;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #38506a;
+    background:#07111f;
+    color:white;
+    font-size:16px;
+    outline:none;
+}
+
+textarea:focus{
+    border-color:#42a5f5;
+}
+
+button{
+    border:0;
+    border-radius:10px;
+    padding:12px 17px;
+    margin:7px 5px 0 0;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    background:#1976d2;
+    color:white;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.btn-danger{
+    background:#c62828;
+}
+
+.btn-secondary{
+    background:#455a64;
+}
+
+.info{
+    background:#13283d;
+    border-left:4px solid #42a5f5;
+    padding:12px;
+    border-radius:8px;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+@media(max-width:650px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.stat-box{
+    background:#0b1726;
+    border:1px solid #263d55;
+    border-radius:12px;
+    padding:15px;
+}
+
+.stat-title{
+    color:#90caf9;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.big{
+    font-size:28px;
+    font-weight:bold;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+th,td{
+    padding:10px 8px;
+    border-bottom:1px solid #293c50;
+    text-align:center;
+}
+
+th{
+    background:#1565c0;
+}
+
+tr:nth-child(even){
+    background:#0c1928;
+}
+
+.bar-wrap{
+    width:100%;
+    background:#1d2b3a;
+    height:18px;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar{
+    height:100%;
+    background:#42a5f5;
+}
+
+.number-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+}
+
+.number{
+    min-width:42px;
+    padding:9px;
+    text-align:center;
+    border-radius:8px;
+    background:#173b60;
+    font-weight:bold;
+}
+
+.mapping{
+    margin-top:12px;
+}
+
+.mapping h3{
+    color:#81d4fa;
+}
+
+.pair{
+    display:inline-block;
+    background:#17334e;
+    border:1px solid #2e5273;
+    padding:8px 12px;
+    border-radius:8px;
+    margin:4px;
+    font-weight:bold;
+}
+
+.position-title{
+    color:#ffcc80;
+    font-size:18px;
+    margin-bottom:5px;
+}
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#90a4ae;
+}
+
+.footer{
+    text-align:center;
+    color:#78909c;
+    font-size:13px;
+    padding:15px;
+}
+
+.warning{
+    background:#332814;
+    border-left:4px solid #ffb300;
+    padding:12px;
+    border-radius:8px;
+    line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>📊 ANALISIS RESULT 4D</h1>
+        <p>Statistik Historis & Pemetaan Digit</p>
+    </div>
+
+    <div class="card">
+
+        <h2>1. Masukkan Data Result</h2>
+
+        <p>
+            Masukkan hasil 4 digit sebelumnya. Satu hasil per baris.
+            Contoh:
+        </p>
+
+<textarea id="resultInput" placeholder="Contoh:
+1234
+5678
+9012
+3345
+7788"></textarea>
+
+        <br>
+
+        <button onclick="analisis()">🔎 ANALISIS</button>
+        <button class="btn-secondary" onclick="contohData()">📋 DATA CONTOH</button>
+        <button class="btn-danger" onclick="hapusData()">🗑️ HAPUS</button>
+
+        <div class="info">
+            Data dianalisis secara statistik berdasarkan hasil yang
+            dimasukkan. Sistem tidak menjamin atau menentukan hasil
+            undian berikutnya.
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>2. Ringkasan Data</h2>
+
+        <div class="grid">
+
+            <div class="stat-box">
+                <div class="stat-title">Jumlah Result</div>
+                <div class="big" id="jumlahResult">0</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-title">Jumlah Digit</div>
+                <div class="big" id="jumlahDigit">0</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-title">Digit Terbanyak</div>
+                <div class="big" id="digitTerbanyak">-</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-title">Digit Paling Sedikit</div>
+                <div class="big" id="digitSedikit">-</div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>3. Frekuensi Digit 0–9</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Digit</th>
+                    <th>Frekuensi</th>
+                    <th>Persentase</th>
+                    <th>Grafik</th>
+                </tr>
+            </thead>
+
+            <tbody id="frekuensiTable"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>4. Statistik Posisi</h2>
+
+        <div class="grid">
+
+            <div class="stat-box">
+                <div class="position-title">AS</div>
+                <div id="asResult"></div>
+            </div>
+
+            <div class="stat-box">
+                <div class="position-title">COP / KOP</div>
+                <div id="copResult"></div>
+            </div>
+
+            <div class="stat-box">
+                <div class="position-title">KEPALA</div>
+                <div id="kepalaResult"></div>
+            </div>
+
+            <div class="stat-box">
+                <div class="position-title">EKOR</div>
+                <div id="ekorResult"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>5. Pemetaan Rumus Dari Gambar</h2>
+
+        <div class="mapping">
+
+            <h3>ML / Mistik Lama</h3>
+
+            <div class="pair">0 - 1</div>
+            <div class="pair">2 - 5</div>
+            <div class="pair">3 - 8</div>
+            <div class="pair">4 - 7</div>
+            <div class="pair">6 - 9</div>
+
+        </div>
+
+
+        <div class="mapping">
+
+            <h3>Mb / Mistik Baru</h3>
+
+            <div class="pair">0 - 8</div>
+            <div class="pair">2 - 6</div>
+            <div class="pair">3 - 9</div>
+            <div class="pair">4 - 5</div>
+            <div class="pair">7 - 1</div>
+
+        </div>
+
+
+        <div class="mapping">
+
+            <h3>Indx / Index</h3>
+
+            <div class="pair">0 - 5</div>
+            <div class="pair">2 - 7</div>
+            <div class="pair">3 - 8</div>
+            <div class="pair">4 - 9</div>
+            <div class="pair">1 - 6</div>
+
+        </div>
+
+
+        <div class="mapping">
+
+            <h3>Ty / Tysen</h3>
+
+            <div class="pair">0 - 7</div>
+            <div class="pair">2 - 9</div>
+            <div class="pair">3 - 6</div>
+            <div class="pair">4 - 1</div>
+            <div class="pair">5 - 8</div>
+
+        </div>
+
+
+        <div class="mapping">
+
+            <h3>MO / Mistik 0</h3>
+
+            <div class="pair">0 - 6</div>
+            <div class="pair">1 - 5</div>
+            <div class="pair">2 - 8</div>
+            <div class="pair">3 - 7</div>
+            <div class="pair">4 - 9</div>
+
+        </div>
+
+
+        <div class="mapping">
+
+            <h3>M9 / Mistik 9</h3>
+
+            <div class="pair">0 - 9</div>
+            <div class="pair">1 - 8</div>
+            <div class="pair">2 - 7</div>
+            <div class="pair">3 - 6</div>
+            <div class="pair">4 - 5</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>6. Frekuensi Hasil Pemetaan</h2>
+
+        <p>
+            Bagian ini menghitung berapa kali pasangan pemetaan
+            muncul berdasarkan digit pada data historis.
+        </p>
+
+        <div id="mappingStatistics"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>7. Distribusi AS / COP / KEPALA / EKOR</h2>
+
+        <div id="positionStatistics"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>8. Riwayat Data Yang Dianalisis</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Result</th>
+                    <th>AS</th>
+                    <th>COP</th>
+                    <th>Kepala</th>
+                    <th>Ekor</th>
+                </tr>
+            </thead>
+
+            <tbody id="historyTable"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="warning">
+            ⚠️ <b>Catatan:</b><br>
+            Statistik masa lalu hanya menggambarkan data yang telah
+            dimasukkan. Frekuensi historis tidak dapat memastikan
+            hasil undian berikutnya.
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        ANALISIS RESULT 4D • HTML Offline • GitHub Pages
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   PEMETAAN RUMUS
+========================================= */
+
+const mappings = {
+
+    "ML / Mistik Lama":[
+        ["0","1"],
+        ["2","5"],
+        ["3","8"],
+        ["4","7"],
+        ["6","9"]
+    ],
+
+    "Mb / Mistik Baru":[
+        ["0","8"],
+        ["2","6"],
+        ["3","9"],
+        ["4","5"],
+        ["7","1"]
+    ],
+
+    "Indx / Index":[
+        ["0","5"],
+        ["2","7"],
+        ["3","8"],
+        ["4","9"],
+        ["1","6"]
+    ],
+
+    "Ty / Tysen":[
+        ["0","7"],
+        ["2","9"],
+        ["3","6"],
+        ["4","1"],
+        ["5","8"]
+    ],
+
+    "MO / Mistik 0":[
+        ["0","6"],
+        ["1","5"],
+        ["2","8"],
+        ["3","7"],
+        ["4","9"]
+    ],
+
+    "M9 / Mistik 9":[
+        ["0","9"],
+        ["1","8"],
+        ["2","7"],
+        ["3","6"],
+        ["4","5"]
+    ]
+
+};
+
+
+/* =========================================
+   DATA CONTOH
+========================================= */
+
+function contohData(){
+
+    document.getElementById("resultInput").value =
+`1234
+5678
+9012
+3345
+7788
+2468
+1357
+9081
+4456
+7290
+5631
+8172
+3904
+6257
+1489`;
+
+    analisis();
+}
+
+
+/* =========================================
+   AMBIL DATA
+========================================= */
+
+function getResults(){
+
+    const text =
+        document.getElementById("resultInput").value;
+
+    const lines =
+        text.split(/\n|\r/);
+
+    const results = [];
+
+    lines.forEach(line => {
+
+        let value =
+            line.replace(/\D/g,"");
+
+        if(value.length === 4){
+
+            results.push(value);
+
+        }
+
+    });
+
+    return results;
+}
+
+
+/* =========================================
+   ANALISIS UTAMA
+========================================= */
+
+function analisis(){
+
+    const results = getResults();
+
+    if(results.length === 0){
+
+        alert("Masukkan minimal satu result 4 digit.");
+
+        return;
+
+    }
+
+
+    let freq =
+        Array(10).fill(0);
+
+    let posisi = {
+
+        AS:Array(10).fill(0),
+
+        COP:Array(10).fill(0),
+
+        Kepala:Array(10).fill(0),
+
+        Ekor:Array(10).fill(0)
+
+    };
+
+
+    results.forEach(result => {
+
+        const digits =
+            result.split("").map(Number);
+
+        digits.forEach(d => {
+
+            freq[d]++;
+
+        });
+
+        posisi.AS[digits[0]]++;
+
+        posisi.COP[digits[1]]++;
+
+        posisi.Kepala[digits[2]]++;
+
+        posisi.Ekor[digits[3]]++;
+
+    });
+
+
+    document.getElementById("jumlahResult")
+        .textContent = results.length;
+
+    document.getElementById("jumlahDigit")
+        .textContent = results.length * 4;
+
+
+    let max =
+        Math.max(...freq);
+
+    let min =
+        Math.min(...freq);
+
+
+    let digitMax =
+        freq.map((v,i)=>v===max?i:null)
+            .filter(v=>v!==null);
+
+    let digitMin =
+        freq.map((v,i)=>v===min?i:null)
+            .filter(v=>v!==null);
+
+
+    document.getElementById("digitTerbanyak")
+        .textContent =
+        digitMax.join(", ");
+
+
+    document.getElementById("digitSedikit")
+        .textContent =
+        digitMin.join(", ");
+
+
+    tampilFrekuensi(freq);
+
+    tampilPosisi(posisi);
+
+    tampilMapping(freq);
+
+    tampilHistory(results);
+
+}
+
+
+/* =========================================
+   TABEL FREKUENSI
+========================================= */
+
+function tampilFrekuensi(freq){
+
+    const total =
+        freq.reduce((a,b)=>a+b,0);
+
+    const tbody =
+        document.getElementById("frekuensiTable");
+
+    tbody.innerHTML = "";
+
+
+    freq.forEach((jumlah,digit)=>{
+
+        const persen =
+            total ?
+            ((jumlah/total)*100).toFixed(2)
+            : 0;
+
+
+        const max =
+            Math.max(...freq);
+
+
+        const width =
+            max ?
+            (jumlah/max)*100
+            : 0;
+
+
+        tbody.innerHTML += `
+
+        <tr>
+
+            <td><b>${digit}</b></td>
+
+            <td>${jumlah}</td>
+
+            <td>${persen}%</td>
+
+            <td>
+
+                <div class="bar-wrap">
+
+                    <div
+                        class="bar"
+                        style="width:${width}%">
+                    </div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================
+   STATISTIK POSISI
+========================================= */
+
+function tampilPosisi(posisi){
+
+    buatPositionBox(
+        "asResult",
+        posisi.AS
+    );
+
+    buatPositionBox(
+        "copResult",
+        posisi.COP
+    );
+
+    buatPositionBox(
+        "kepalaResult",
+        posisi.Kepala
+    );
+
+    buatPositionBox(
+        "ekorResult",
+        posisi.Ekor
+    );
+
+
+    let html = "";
+
+    html += positionTable(
+        "AS",
+        posisi.AS
+    );
+
+    html += positionTable(
+        "COP / KOP",
+        posisi.COP
+    );
+
+    html += positionTable(
+        "KEPALA",
+        posisi.Kepala
+    );
+
+    html += positionTable(
+        "EKOR",
+        posisi.Ekor
+    );
+
+
+    document.getElementById(
+        "positionStatistics"
+    ).innerHTML = html;
+
+}
+
+
+/* =========================================
+   BOX POSISI
+========================================= */
+
+function buatPositionBox(id,data){
+
+    const total =
+        data.reduce((a,b)=>a+b,0);
+
+    let arr =
+        data.map((v,i)=>({
+
+            digit:i,
+            jumlah:v
+
+        }));
+
+
+    arr.sort((a,b)=>b.jumlah-a.jumlah);
+
+
+    let html = "";
+
+    arr.slice(0,5).forEach(item=>{
+
+        const persen =
+            total ?
+            ((item.jumlah/total)*100).toFixed(1)
+            : 0;
+
+
+        html += `
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            margin:6px 0;
+        ">
+
+            <b>${item.digit}</b>
+
+            <span>
+                ${item.jumlah}
+                (${persen}%)
+            </span>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document.getElementById(id).innerHTML =
+        html;
+
+}
+
+
+/* =========================================
+   TABEL POSISI
+========================================= */
+
+function positionTable(title,data){
+
+    const total =
+        data.reduce((a,b)=>a+b,0);
+
+    let html = `
+
+        <h3 style="color:#90caf9">
+            ${title}
+        </h3>
+
+        <table>
+
+            <tr>
+                <th>Digit</th>
+                <th>Frekuensi</th>
+                <th>%</th>
+            </tr>
+
+    `;
+
+
+    data.forEach((jumlah,digit)=>{
+
+        const persen =
+            total ?
+            ((jumlah/total)*100).toFixed(2)
+            : 0;
+
+
+        html += `
+
+        <tr>
+
+            <td><b>${digit}</b></td>
+
+            <td>${jumlah}</td>
+
+            <td>${persen}%</td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    html += "</table>";
+
+    return html;
+
+}
+
+
+/* =========================================
+   PEMETAAN RUMUS
+========================================= */
+
+function tampilMapping(freq){
+
+    let html = "";
+
+
+    for(const nama in mappings){
+
+        html += `
+
+        <div class="mapping">
+
+            <h3>${nama}</h3>
+
+            <table>
+
+                <tr>
+                    <th>Pasangan</th>
+                    <th>Total Kemunculan Digit</th>
+                </tr>
+
+        `;
+
+
+        mappings[nama].forEach(pair=>{
+
+            const a =
+                parseInt(pair[0]);
+
+            const b =
+                parseInt(pair[1]);
+
+
+            const jumlah =
+                freq[a] + freq[b];
+
+
+            html += `
+
+            <tr>
+
+                <td>
+                    <b>${a} - ${b}</b>
+                </td>
+
+                <td>
+                    ${jumlah}
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+
+        html += `
+
+            </table>
+
+        </div>
+
+        `;
+
+    }
+
+
+    document.getElementById(
+        "mappingStatistics"
+    ).innerHTML = html;
+
+}
+
+
+/* =========================================
+   HISTORY
+========================================= */
+
+function tampilHistory(results){
+
+    const tbody =
+        document.getElementById("historyTable");
+
+    tbody.innerHTML = "";
+
+
+    results.forEach((result,index)=>{
+
+        tbody.innerHTML += `
+
+        <tr>
+
+            <td>${index+1}</td>
+
+            <td><b>${result}</b></td>
+
+            <td>${result[0]}</td>
+
+            <td>${result[1]}</td>
+
+            <td>${result[2]}</td>
+
+            <td>${result[3]}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================
+   HAPUS
+========================================= */
+
+function hapusData(){
+
+    document.getElementById(
+        "resultInput"
+    ).value = "";
+
+    document.getElementById(
+        "jumlahResult"
+    ).textContent = "0";
+
+    document.getElementById(
+        "jumlahDigit"
+    ).textContent = "0";
+
+    document.getElementById(
+        "digitTerbanyak"
+    ).textContent = "-";
+
+    document.getElementById(
+        "digitSedikit"
+    ).textContent = "-";
+
+    document.getElementById(
+        "frekuensiTable"
+    ).innerHTML = "";
+
+    document.getElementById(
+        "historyTable"
+    ).innerHTML = "";
+
+    document.getElementById(
+        "mappingStatistics"
+    ).innerHTML = "";
+
+    document.getElementById(
+        "positionStatistics"
+    ).innerHTML = "";
+
+    document.getElementById("asResult")
+        .innerHTML = "";
+
+    document.getElementById("copResult")
+        .innerHTML = "";
+
+    document.getElementById("kepalaResult")
+        .innerHTML = "";
+
+    document.getElementById("ekorResult")
+        .innerHTML = "";
+
+}
+
+
+/* =========================================
+   LOAD DATA CONTOH OTOMATIS
+========================================= */
+
+window.onload = function(){
+
+    contohData();
+
+};
+
+</script>
+
+</body>
+  </html>
